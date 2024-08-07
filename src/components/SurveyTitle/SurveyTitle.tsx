@@ -1,20 +1,19 @@
 import React from 'react';
+import { SurveyTitleProps } from '../../constants/global.types';
 
-const SurveyQuestions = () => {
-    // const [question, setQuestion] = useState('');
+function SurveyTitle({ title, updateTitle }: SurveyTitleProps) {
 
-    // const handleAddQuestion = () => {
-    //   updateSurveyData({ questions: [...surveyData.questions, question] });
-    //   setQuestion(''); // Clear the input field after adding the question
-    // };
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateTitle(event.target.value);
+  }
 
   return (
-    <div className="survey-questions">
-      <h3>Survey Questions</h3>
-      <label htmlFor="question">Question:</label>
-      <input type="text" id="question" name="question" placeholder="Enter your question" />
+    <div className="survey-title">
+      <h3>Survey Title</h3>
+      <label htmlFor="title">Title:</label>
+      <input type="text" id="title" value={title} onChange={handleTitleChange} name="title" />
     </div>
   );
 };
 
-export default SurveyQuestions;
+export default SurveyTitle;

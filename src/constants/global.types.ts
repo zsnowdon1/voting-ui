@@ -1,4 +1,3 @@
-// types/global.types.ts
 export interface CreateSurveyRequest {
     username: string;
     title: string;
@@ -22,4 +21,10 @@ export interface Survey {
     surveyId: number;
     hostUsername: string;
     title: string;
+    questionList: Question[];
+}
+
+export interface SurveyTitleProps {
+    title: string,
+    updateTitle: (newTitle: string) => void;
 }
