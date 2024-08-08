@@ -28,3 +28,9 @@ export interface SurveyTitleProps {
     title: string,
     updateTitle: (newTitle: string) => void;
 }
+
+export interface SurveyQuestionProps {
+    question?: Question,
+    questionNum: number,
+    addQuestionToSurvey: (newQuestion: Question) => void;
+}
