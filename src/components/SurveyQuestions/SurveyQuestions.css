@@ -1,0 +1,23 @@
+.question-choice {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.edit-choice {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.add-choice {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.question-choice {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+}

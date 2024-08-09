@@ -3,7 +3,7 @@ import SurveyNavbar from '../SurveyNavBar/SurveyNavBar';
 import SurveyTitle from '../SurveyTitle/SurveyTitle'
 import SurveyQuestions from '../SurveyQuestions/SurveyQuestions';
 import './SurveyContainer.css';
-import { Question, Survey } from '../../constants/global.types';
+import { Choice, Question, Survey } from '../../constants/global.types';
 
 const SurveyContainer = () => {
 
@@ -12,17 +12,8 @@ const SurveyContainer = () => {
   const [survey, setSurvey] = useState<Survey>({
     surveyId: 0,
     hostUsername: '',
-    title: 'TEST',
-    questionList: [{
-      questionId: 1,
-      surveyId: 1,
-      question: "TESTQ",
-      choices: [{
-        choice: "Choice",
-        questionId: 1,
-        choiceId: 1
-      }]
-    }]
+    title: '',
+    questionList: []
   });
 
   const addQuestionToSurvey = (newQuestion: Question ) => {
@@ -30,6 +21,26 @@ const SurveyContainer = () => {
         ...survey,
         questionList: [...survey.questionList, newQuestion]
     }));
+  }
+
+  const updateQuestionText = (index: number, newText: string) => {
+    setSurvey(prevSurvey => {
+      const updatedQuestions = prevSurvey.questionList.map((question, i) =>
+        i === index ? { ...question, question: newText } : question
+      );
+      console.log(JSON.stringify(updatedQuestions));
+      return { ...prevSurvey, questionList: updatedQuestions };
+    });
+  }
+
+  const updateChoices = (index: number, newChoices: Choice[]) => {
+    setSurvey(prevSurvey => {
+      const updatedQuestions = prevSurvey.questionList.map((question, i) =>
+        i === index ? { ...question, choices: newChoices } : question
+      );
+      console.log(JSON.stringify(updatedQuestions));
+      return { ...prevSurvey, questionList: updatedQuestions };
+    });
   }
 
   const nextStep = () => {
@@ -61,7 +72,7 @@ const SurveyContainer = () => {
   };
 
   const updateTitle = (newTitle: string) => {
-    console.log('Updating title to: ' + newTitle)
+    // console.log('Updating title to: ' + newTitle);
     setSurvey(survey => ({
       ...survey,
       title: newTitle,
@@ -75,8 +86,9 @@ const SurveyContainer = () => {
       {step === -1 && <SurveyTitle title={survey.title} updateTitle={updateTitle}/>}
       {step >= 0 && <SurveyQuestions 
                         question={survey.questionList[step]}
-                        questionNum={step + 1}
-                        addQuestionToSurvey={addQuestionToSurvey}
+                        questionNum={step}
+                        updateChoices={updateChoices}
+                        updateQuestionText={updateQuestionText}
                       />}
       <SurveyNavbar nextStep={nextStep} prevStep={prevStep} />
     </div>
