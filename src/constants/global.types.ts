@@ -42,6 +42,11 @@ export interface UpdateQuestionProps {
     updateChoices: (index: number, newChoices: Choice[]) => void;
 }
 
+export interface SurveyContainerProps {
+    surveyId: number,
+    hostUsername: string
+}
+
 export interface NavBarProps {
     nextStep: () => void;
     prevStep: () => void;

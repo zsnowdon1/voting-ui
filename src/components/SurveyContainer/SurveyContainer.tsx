@@ -3,11 +3,14 @@ import SurveyNavbar from '../SurveyNavBar/SurveyNavBar';
 import SurveyTitle from '../SurveyTitle/SurveyTitle'
 import SurveyQuestions from '../SurveyQuestions/SurveyQuestions';
 import './SurveyContainer.css';
-import { Choice, Question, Survey } from '../../constants/global.types';
+import { Choice, Question, Survey, SurveyContainerProps } from '../../constants/global.types';
+import { useParams } from 'react-router-dom';
 
 
 // Thsi will take in a survey at some point
-const SurveyContainer = () => {
+const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
+
+  let { id } = useParams();
 
   const [step, setStep] = useState(-1);
 
@@ -105,6 +108,7 @@ const SurveyContainer = () => {
 
   return (
     <div className="survey-container">
+      <div>`Survey ${id}`</div>
       {step === -1 && <SurveyTitle title={survey.title} updateTitle={updateTitle}/>}
       {step >= 0 && <SurveyQuestions 
                         question={survey.questionList[step]}
