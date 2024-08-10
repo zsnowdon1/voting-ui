@@ -5,6 +5,8 @@ import SurveyQuestions from '../SurveyQuestions/SurveyQuestions';
 import './SurveyContainer.css';
 import { Choice, Question, Survey } from '../../constants/global.types';
 
+
+// Thsi will take in a survey at some point
 const SurveyContainer = () => {
 
   const [step, setStep] = useState(-1);
@@ -13,8 +15,43 @@ const SurveyContainer = () => {
     surveyId: 0,
     hostUsername: '',
     title: '',
-    questionList: []
+    questionList: [
+      {
+        question: '',
+        questionId: 0,
+        choices: []
+      }
+    ]
   });
+
+  const isLastQuestionEmpty = (question?: Question) => {
+    return question?.choices.length === 0 && question?.question === ''
+  };
+
+  // Page toggle logic
+  const nextStep = () => {
+    console.log(JSON.stringify(survey));
+    if(step < survey.questionList.length - 1) {
+      setStep(step + 1);
+    } else {
+      if(!isLastQuestionEmpty(survey.questionList[survey.questionList.length - 1])) {
+        if(step + 1 === survey.questionList.length) {
+          addQuestionToSurvey({
+            questionId: survey.questionList.length,
+            question: '',
+            choices: []
+          });
+        }
+        setStep(step + 1);
+      }
+    }
+  };
+
+  const prevStep = () => {
+    if(step > -1) {
+      setStep(step - 1)
+    }
+  };
 
   const addQuestionToSurvey = (newQuestion: Question ) => {
     setSurvey(survey => ({
@@ -28,7 +65,6 @@ const SurveyContainer = () => {
       const updatedQuestions = prevSurvey.questionList.map((question, i) =>
         i === index ? { ...question, question: newText } : question
       );
-      console.log(JSON.stringify(updatedQuestions));
       return { ...prevSurvey, questionList: updatedQuestions };
     });
   }
@@ -38,23 +74,11 @@ const SurveyContainer = () => {
       const updatedQuestions = prevSurvey.questionList.map((question, i) =>
         i === index ? { ...question, choices: newChoices } : question
       );
-      console.log(JSON.stringify(updatedQuestions));
+      // console.log(JSON.stringify(updatedQuestions));
+     
       return { ...prevSurvey, questionList: updatedQuestions };
     });
   }
-
-  const nextStep = () => {
-    if(step < survey.questionList.length) {
-      setStep(step + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if(step > -1) {
-      setStep(step - 1)
-    }
-  };
-
 
   const updateSurveyData = (updatedQuestion: Question, index: number) => {
     const updatedQuestions  = survey.questionList.map((question, i) =>
@@ -72,7 +96,7 @@ const SurveyContainer = () => {
   };
 
   const updateTitle = (newTitle: string) => {
-    // console.log('Updating title to: ' + newTitle);
+    // console.log('Updating title to: ' + JSON.stringify(survey));
     setSurvey(survey => ({
       ...survey,
       title: newTitle,

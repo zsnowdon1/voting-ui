@@ -1,10 +1,6 @@
 import React from 'react';
+import { NavBarProps } from '../../constants/global.types';
 import './SurveyNavBar.css';
-
-interface NavBarProps {
-  nextStep: () => void;
-  prevStep: () => void;
-}
 
 const SurveyNavBar = ({ nextStep, prevStep }: NavBarProps) => {
   return (

@@ -41,3 +41,8 @@ export interface UpdateQuestionProps {
     updateQuestionText: (index: number, newText: string) => void;
     updateChoices: (index: number, newChoices: Choice[]) => void;
 }
+
+export interface NavBarProps {
+    nextStep: () => void;
+    prevStep: () => void;
+}

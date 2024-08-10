@@ -25,11 +25,17 @@ const SurveyQuestions = ({question, questionNum, updateQuestionText, updateChoic
   }
 
   const handleChoiceupdate = (index: number, newChoice: string) => {
-    const newChoices = question.choices.map((choice, i) =>
-      i === index ? { ...choice, choice: newChoice } : choice
-    );
-    console.log(newChoices);
-    updateChoices(questionNum, newChoices);
+    if (newChoice === '') {
+      const newChoices = question.choices.filter((_, i) => i !== index);
+      console.log(newChoices);
+      updateChoices(questionNum, newChoices); 
+    } else {
+      const newChoices = question.choices.map((choice, i) =>
+        i === index ? { ...choice, choice: newChoice } : choice
+      );
+      console.log(newChoices);
+      updateChoices(questionNum, newChoices); 
+    }
   }
 
   const handleQuestionTextUpdate = (newQuestion: string) => {
