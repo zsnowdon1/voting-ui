@@ -105,8 +105,6 @@ const SurveyContainer = () => {
 
   return (
     <div className="survey-container">
-      {/* {step === 1 && <SurveyTitle surveyData={surveyData} updateSurveyData={updateSurveyData} />}
-      {step === 2 && <SurveyQuestions surveyData={surveyData} updateSurveyData={updateSurveyData}/>} */}
       {step === -1 && <SurveyTitle title={survey.title} updateTitle={updateTitle}/>}
       {step >= 0 && <SurveyQuestions 
                         question={survey.questionList[step]}

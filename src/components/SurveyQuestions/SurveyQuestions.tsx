@@ -6,16 +6,10 @@ import './SurveyQuestions.css';
 const SurveyQuestions = ({question, questionNum, updateQuestionText, updateChoices}: UpdateQuestionProps) => {
 
   const [newChoice, setNewChoice] = useState('');
-  // const [editChoiceIndex, setEditChoiceIndex] = useState(-1);
-  // const [editChoiceValue, setEditChoiceValue] = useState('');
-
-  // const handleEditChoiceClick = (choiceNum: number) => {
-  //   setEditChoiceIndex(choiceNum);
-  //   setEditChoiceValue(choices[choiceNum].choice);
-  // }
 
   const handleAddChoice = () => {
     const newChoiceObject: Choice = {
+      choiceId: question.choices.length,
       questionId: questionNum,
       choice: newChoice
     }
@@ -27,13 +21,11 @@ const SurveyQuestions = ({question, questionNum, updateQuestionText, updateChoic
   const handleChoiceupdate = (index: number, newChoice: string) => {
     if (newChoice === '') {
       const newChoices = question.choices.filter((_, i) => i !== index);
-      console.log(newChoices);
       updateChoices(questionNum, newChoices); 
     } else {
       const newChoices = question.choices.map((choice, i) =>
         i === index ? { ...choice, choice: newChoice } : choice
       );
-      console.log(newChoices);
       updateChoices(questionNum, newChoices); 
     }
   }
