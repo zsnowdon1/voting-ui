@@ -47,7 +47,17 @@ export interface SurveyContainerProps {
     hostUsername: string
 }
 
-export interface NavBarProps {
+export interface QuestionNavBarProps {
     nextStep: () => void;
     prevStep: () => void;
+}
+
+export interface SurveyNavBarProps {
+    onSave: () => void;
+    title: string,
+    saveToggle: boolean,
+    // onExit: () => void;
+    // onJumpToQuestion: () => void;
+    // currentStep: () => void;
+    // totalSteps: () => void;
 }

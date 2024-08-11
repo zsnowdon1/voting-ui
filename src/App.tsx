@@ -9,7 +9,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/survey/:id" element={<SurveyContainer surveyId={0} hostUsername=''/>} />
+        <Route path="/survey/:surveyId" element={<SurveyContainer/>} />
         <Route path="/host" element={<HostPage />} />
       </Routes>
     </Router>

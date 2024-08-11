@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './HostPage.css';
-import { fetchSurveys } from '../../services/apiService';
+import { fetchSurveys } from '../../services/ApiService';
 import { Survey } from '../../constants/global.types';
 import { useNavigate } from 'react-router-dom';
 

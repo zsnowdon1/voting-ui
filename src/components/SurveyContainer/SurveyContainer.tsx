@@ -1,18 +1,22 @@
-import { useState } from 'react';
-import SurveyNavbar from '../SurveyNavBar/SurveyNavBar';
+import { useEffect, useState } from 'react';
+import QuestionNavBar from '../QuestionNavBar/QuestionNavBar';
+import SurveyNavBar from '../SurveyNavBar/SurveyNavBar';
 import SurveyTitle from '../SurveyTitle/SurveyTitle'
 import SurveyQuestions from '../SurveyQuestions/SurveyQuestions';
 import './SurveyContainer.css';
 import { Choice, Question, Survey, SurveyContainerProps } from '../../constants/global.types';
 import { useParams } from 'react-router-dom';
+import { fetchSurveyById } from '../../services/ApiService';
 
 
-// Thsi will take in a survey at some point
-const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
+// This will take in a survey at some point
+const SurveyContainer = () => {
 
-  let { id } = useParams();
+  let { surveyId } = useParams();
 
   const [step, setStep] = useState(-1);
+
+  const [saveToggle, setSaveToggle] = useState(false);
 
   const [survey, setSurvey] = useState<Survey>({
     surveyId: 0,
@@ -27,13 +31,20 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
     ]
   });
 
+  const getSurvey = async () => {
+    if(surveyId !== undefined) {
+      const survey = await fetchSurveyById(parseInt(surveyId));
+      setSurvey(survey);
+      // console.log(JSON.stringify(survey));
+    }
+};
+
   const isLastQuestionEmpty = (question?: Question) => {
     return question?.choices.length === 0 && question?.question === ''
   };
 
   // Page toggle logic
   const nextStep = () => {
-    console.log(JSON.stringify(survey));
     if(step < survey.questionList.length - 1) {
       setStep(step + 1);
     } else {
@@ -41,6 +52,7 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
         if(step + 1 === survey.questionList.length) {
           addQuestionToSurvey({
             questionId: survey.questionList.length,
+            surveyId: survey.surveyId,
             question: '',
             choices: []
           });
@@ -48,20 +60,29 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
         setStep(step + 1);
       }
     }
+    console.log(JSON.stringify(survey));
   };
 
   const prevStep = () => {
     if(step > -1) {
-      setStep(step - 1)
+      setStep(step - 1);
     }
   };
 
   const addQuestionToSurvey = (newQuestion: Question ) => {
+    console.log("Adding question to survey");
+    console.log(JSON.stringify(newQuestion));
     setSurvey(survey => ({
         ...survey,
         questionList: [...survey.questionList, newQuestion]
     }));
+    setSaveToggle(true);
   }
+
+  const handleSaveSurvey = () => {
+    setSaveToggle(false);
+    console.log("Saving");
+  };
 
   const updateQuestionText = (index: number, newText: string) => {
     setSurvey(prevSurvey => {
@@ -70,6 +91,7 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
       );
       return { ...prevSurvey, questionList: updatedQuestions };
     });
+    setSaveToggle(true);
   }
 
   const updateChoices = (index: number, newChoices: Choice[]) => {
@@ -81,6 +103,7 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
      
       return { ...prevSurvey, questionList: updatedQuestions };
     });
+    setSaveToggle(true);
   }
 
   const updateSurveyData = (updatedQuestion: Question, index: number) => {
@@ -106,9 +129,15 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
     }));
   };
 
+  useEffect(() => {
+    if(surveyId !== undefined && parseInt(surveyId) !== survey.surveyId) {
+      getSurvey();
+    }
+  }, [survey]);
+
   return (
     <div className="survey-container">
-      <div>`Survey ${id}`</div>
+      <SurveyNavBar onSave={handleSaveSurvey} title={survey.title} saveToggle={saveToggle}/>
       {step === -1 && <SurveyTitle title={survey.title} updateTitle={updateTitle}/>}
       {step >= 0 && <SurveyQuestions 
                         question={survey.questionList[step]}
@@ -116,7 +145,7 @@ const SurveyContainer = ({surveyId, hostUsername}: SurveyContainerProps) => {
                         updateChoices={updateChoices}
                         updateQuestionText={updateQuestionText}
                       />}
-      <SurveyNavbar nextStep={nextStep} prevStep={prevStep} />
+      <QuestionNavBar nextStep={nextStep} prevStep={prevStep} />
     </div>
   );
 };
