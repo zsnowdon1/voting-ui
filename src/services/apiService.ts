@@ -18,6 +18,17 @@ export const fetchSurveyById = async (surveyId: number) => {
   return response.data;
 }
 
+export const fetchQuestionsBySurvey = async (surveyId: string) => {
+  console.log("Fetching questions for survey ", surveyId);
+  const response = await apiClient.get(`/surveys/questions/${surveyId}`);
+  return response.data;
+}
+
+export const fetchChoicesByQuestion = async (questionId: string) => {
+  console.log("Fetching choices for questionId ", questionId);
+  const response = await apiClient.get(`/surveys/choices/${questionId}`);
+  return response.data;
+}
 
 // export const createSurvey = (data: SurveyData) => apiClient.post('/surveys', data);
 // export const updateSurvey = (surveyId: number, data: SurveyData) => apiClient.put(`/surveys/${surveyId}`, data);

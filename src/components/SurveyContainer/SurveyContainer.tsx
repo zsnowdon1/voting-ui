@@ -4,7 +4,7 @@ import SurveyNavBar from '../SurveyNavBar/SurveyNavBar';
 import SurveyTitle from '../SurveyTitle/SurveyTitle'
 import SurveyQuestions from '../SurveyQuestions/SurveyQuestions';
 import './SurveyContainer.css';
-import { Choice, Question, Survey, SurveyContainerProps } from '../../constants/global.types';
+import { Choice, Question, Survey } from '../../constants/global.types';
 import { useParams } from 'react-router-dom';
 import { fetchSurveyById } from '../../services/ApiService';
 
@@ -31,7 +31,9 @@ const SurveyContainer = () => {
     ]
   });
 
+  // Fetches survey for id from route param
   const getSurvey = async () => {
+    console.log("Getting survey ", surveyId);
     if(surveyId !== undefined) {
       const survey = await fetchSurveyById(parseInt(surveyId));
       setSurvey(survey);
@@ -39,12 +41,13 @@ const SurveyContainer = () => {
     }
 };
 
-  const isLastQuestionEmpty = (question?: Question) => {
-    return question?.choices.length === 0 && question?.question === ''
-  };
-
   // Page toggle logic
+  const isLastQuestionEmpty = (question?: Question) => {
+    return question?.choices.length === 0 && question?.question === '';
+  };
   const nextStep = () => {
+    console.log("nextStep1");
+    console.log(JSON.stringify(survey));
     if(step < survey.questionList.length - 1) {
       setStep(step + 1);
     } else {
@@ -60,6 +63,7 @@ const SurveyContainer = () => {
         setStep(step + 1);
       }
     }
+    console.log("nextStep2");
     console.log(JSON.stringify(survey));
   };
 
@@ -105,21 +109,16 @@ const SurveyContainer = () => {
     });
     setSaveToggle(true);
   }
-
-  const updateSurveyData = (updatedQuestion: Question, index: number) => {
-    const updatedQuestions  = survey.questionList.map((question, i) =>
-      i === index ? { ...question, ...updatedQuestion } : question
-  );
     
-  setSurvey(survey => ({ 
-      ...survey, 
-      questionList: updatedQuestions, 
-      surveyId: survey.surveyId, 
-      hostUsername: survey.hostUsername, 
-      title: survey.title
-    }));
-    // console.log(JSON.stringify(survey));
-  };
+  // setSurvey(survey => ({ 
+  //     ...survey, 
+  //     questionList: survey.questionList, 
+  //     surveyId: survey.surveyId, 
+  //     hostUsername: survey.hostUsername, 
+  //     title: survey.title
+  //   }));
+  //   // console.log(JSON.stringify(survey));
+  // };
 
   const updateTitle = (newTitle: string) => {
     // console.log('Updating title to: ' + JSON.stringify(survey));
@@ -137,7 +136,7 @@ const SurveyContainer = () => {
 
   return (
     <div className="survey-container">
-      <SurveyNavBar onSave={handleSaveSurvey} title={survey.title} saveToggle={saveToggle}/>
+      {/* <SurveyNavBar onSave={handleSaveSurvey} title={survey.title} saveToggle={saveToggle}/> */}
       {step === -1 && <SurveyTitle title={survey.title} updateTitle={updateTitle}/>}
       {step >= 0 && <SurveyQuestions 
                         question={survey.questionList[step]}

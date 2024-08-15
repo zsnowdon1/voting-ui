@@ -1,4 +1,4 @@
-.survey-list-container {
+.question-view-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     background-color: #f0f0f0;
 }
 
-.survey-card {
+.question-view-card {
     width: 400px;
     background-color: white;
     border-radius: 8px;
@@ -14,7 +14,7 @@
     padding: 16px;
 }
 
-.add-survey-button {
+.add-choice-button {
     width: 100%;
     padding: 12px;
     background-color: #007bff;
@@ -26,7 +26,7 @@
     margin-bottom: 16px;
 }
 
-.survey-item-button {
+.choice-item-button {
     width: 100%;
     text-align: left;
     padding: 12px;
@@ -39,21 +39,21 @@
     justify-content: space-between;
 }
 
-.survey-list {
+.choice-list {
     max-height: 300px;
     overflow-y: auto;
   }
 
-.survey-info {
+.choice-info {
     display: flex;
     flex-direction: column;
 }
 
-.survey-id {
+.choice-id {
     font-weight: bold;
 }
 
-.survey-title {
+.choice-text {
     margin-top: 4px;
     color: #555;
 }

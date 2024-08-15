@@ -16,26 +16,29 @@ const HostPage = () => {
         console.log(JSON.stringify(surveyList));
     };
 
-    const handleViewSurvey = (index: number) => {
-        navigate(`/survey/${index}`);
-    };
+    const handleViewSurvey = (surveyId: number) => {
+        navigate(`/survey/${surveyId}`);
+    }
 
     useEffect(() => {
         getSurveys();
     }, [hostname]);
 
     return (
-        <div className="survey-list">
-            {surveys.length > 0 &&
-                <ul> Surveys:
+        <div className='survey-list-container'>
+            <div className='survey-card'>
+                <button className='add-survey-button'>Add New Survey</button>
+                <div className='survey-list'>
                     {surveys.map((survey, index) => (
-                        <div>
-                            <label>{survey.surveyId}</label>
-                            <label>{survey.title}</label>
-                            <button onClick={() => handleViewSurvey(surveys[index].surveyId)}></button>
-                        </div>
+                        <button key={index} className='survey-item-button' onClick={() => handleViewSurvey(survey.surveyId)}>
+                            <div className='survey-info'>
+                                <span className='survey-id'>ID: {survey.surveyId}</span>
+                                <span className='survey-title'>Title: {survey.title}</span>
+                            </div>
+                        </button>
                     ))}
-                </ul>}
+                </div>
+            </div>
         </div>
     );
 };
