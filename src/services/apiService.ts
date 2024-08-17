@@ -1,5 +1,6 @@
 // apiService.ts
 import axios from 'axios';
+import { Question } from '../constants/global.types';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8081',
@@ -26,12 +27,24 @@ export const fetchQuestionDetails = async (questionId: string) => {
   return response.data;
 }
 
-export const addChoice = async(newChoice: string, questionId: number) => {
-  const response = await apiClient.put(`/surveys/questions/addChoice`, {
+export const addChoice = async (newChoice: string, questionId: number) => {
+  const response = await apiClient.put(`/surveys/addChoice`, {
     questionId: questionId,
-    choice: newChoice
+    newChoice: newChoice
   });
   return response.data;
+}
+
+export const addQuestion = async (newQuestion: Question) => {
+  const response = await apiClient.put(`/surveys/addQuestion`, {
+    question: newQuestion
+  });
+  return response.data;
+}
+
+export const deleteChoice = async (choiceId: number) => {
+  const resposne = await apiClient.delete(`/surveys/choices/${choiceId}`);
+  return resposne.data;
 }
 
 // export const createSurvey = (data: SurveyData) => apiClient.post('/surveys', data);

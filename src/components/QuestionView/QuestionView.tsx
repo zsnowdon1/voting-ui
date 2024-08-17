@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './QuestionView.css';
 import { useParams } from 'react-router-dom';
-import { fetchQuestionDetails, addChoice } from '../../services/ApiService'; // Assuming you have this service to fetch questions
+import { fetchQuestionDetails, addChoice, deleteChoice } from '../../services/ApiService';
 import { useNavigate } from 'react-router-dom';
 import { Choice, Question } from '../../constants/global.types';
 import ChoiceModal from '../ChoiceModal/ChoiceModal';
@@ -10,15 +10,20 @@ const QuestionView = () => {
     const { questionId } = useParams<{ questionId: string }>(); // Get the survey ID from the route parameters
     const [question, setQuestion] = useState<Question>({question: '', choices: []});
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const navigate = useNavigate();
 
     const handleAddChoice = () => {
         setIsModalOpen(true);
     };
 
-    const handleViewChoice = (questionId: number) => {
-        if(questionId !== -1) {
-            navigate(`/question/${questionId}`);
+    const handleDeleteChoice = async (choiceId: number) => {
+        if(choiceId !== -1) {
+            const deletedChoice = await deleteChoice(choiceId);
+            if(deletedChoice === choiceId) {
+                setQuestion(prevState => {
+                    const updatedChoices = prevState.choices.filter((choice, _) => choice.choiceId !== choiceId);
+                    return { ...prevState, choices: updatedChoices };
+                });
+            }
         }
     }
 
@@ -34,7 +39,7 @@ const QuestionView = () => {
     }
 
     const getQuestion = async () => {
-        const question = await fetchQuestionDetails(questionId || ''); // Fetch questions based on survey ID
+        const question = await fetchQuestionDetails(questionId || '');
         if(question !== '') {
             setQuestion(question);
         }
@@ -49,19 +54,16 @@ const QuestionView = () => {
     return (
         <div className="question-view-container">
             <div className="question-view-card">
-                <button className="add-choice-button" onClick={() => handleAddChoice()}>Add New Choice</button>
+                <button className="add-choice-button" onClick={handleAddChoice}>Add New Choice</button>
+                <ChoiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveNewChoice}/>
                 <div className="choice-list">
                     {question.choices.map((choice: Choice, index: number) => (
-                        <button key={index} className="choice-item-button" onClick={() => handleViewChoice(choice.choiceId || -1)}>
-                            <div className="choice-info">
-                                <span className="choice-id">Choice {index + 1}</span>
-                                <span className="choice-text">{choice.choice}</span>
-                            </div>
-                        </button>
+                        <div key={index} className="choice-item">
+                            <span className="choice-text">{index + 1}. {choice.choice}</span>
+                            <button className="delete-button" onClick={() => handleDeleteChoice(choice.choiceId || -1)}>X</button>
+                        </div>
                     ))}
                 </div>
-
-                <ChoiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveNewChoice}/>
             </div>
         </div>
     );

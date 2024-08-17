@@ -13,7 +13,7 @@ export interface Question {
 
 export interface Choice {
     choiceId?: number;
-    questionId: number;
+    questionId?: number;
     choice: string;
 }
 
@@ -33,4 +33,11 @@ export interface ChoiceModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (newChoice: string) => void;
+}
+
+export interface QuestionModalProps {
+    isOpen: boolean;
+    surveyId: number;
+    onClose: () => void;
+    onSave: (newQuestion: Question) => void;
 }

@@ -1,27 +1,41 @@
-import React from 'react';
-import './ChoiceModal.css';
+import React, { useState } from 'react';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { ChoiceModalProps } from '../../constants/global.types';
 
-const Modal = ({ isOpen, onClose, onSave }: ChoiceModalProps) => {
-    if (!isOpen) return null;
-
-    let newChoiceText = '';
+const ChoiceModal = ({ isOpen, onClose, onSave }: ChoiceModalProps) => {
+    const [newChoiceText, setNewChoiceText] = useState('');
 
     const handleSave = () => {
         onSave(newChoiceText);
+        setNewChoiceText('');
         onClose();
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>Add New Choice</h2>
-                <input type="text" onChange={(e) => newChoiceText = e.target.value} placeholder="Enter choice text"/>
-                <button onClick={handleSave}>Save</button>
-                <button onClick={onClose}>Cancel</button>
-            </div>
-        </div>
+        <Modal open={isOpen} onClose={onClose} aria-labelledby="add-choice-modal-title" aria-describedby="add-choice-modal-description">
+            <Box
+            sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 300,
+                bgcolor: 'background.paper',
+                border: '2px solid #000',
+                boxShadow: 24,
+                p: 4,
+            }}>
+                <h2 id="add-choice-modal-title">Add a Choice</h2>
+                <TextField label="Choice" fullWidth value={newChoiceText} onChange={(e) => setNewChoiceText(e.target.value)} />
+                <Button variant="contained" color="primary" onClick={handleSave} sx={{ mt: 2 }} >
+                    Add Choice
+                </Button>
+            </Box>
+      </Modal>
     );
 };
 
-export default Modal;
+export default ChoiceModal;
