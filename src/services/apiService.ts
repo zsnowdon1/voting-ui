@@ -6,27 +6,31 @@ const apiClient = axios.create({
   timeout: 10000, // Set a timeout limit
 });
 
-export const fetchSurveys = async (hostname: string) => {
-  console.log(`calling http://localhost:8081/surveys/hostname/${hostname}`);
+export const fetchSurveyList = async (hostname: string) => {
   const response = await apiClient.get(`/surveys/hostname/${hostname}`);
   return response.data;
 }
 
 export const fetchSurveyById = async (surveyId: number) => {
-  console.log("Fetching survey ", surveyId);
   const response = await apiClient.get(`/surveys/${surveyId}`);
   return response.data;
 }
 
-export const fetchQuestionsBySurvey = async (surveyId: string) => {
-  console.log("Fetching questions for survey ", surveyId);
-  const response = await apiClient.get(`/surveys/questions/${surveyId}`);
+export const fetchSurveyDetails = async (surveyId: string) => {
+  const response = await apiClient.get(`/surveys/${surveyId}`);
   return response.data;
 }
 
-export const fetchChoicesByQuestion = async (questionId: string) => {
-  console.log("Fetching choices for questionId ", questionId);
-  const response = await apiClient.get(`/surveys/choices/${questionId}`);
+export const fetchQuestionDetails = async (questionId: string) => {
+  const response = await apiClient.get(`/surveys/question/${questionId}`);
+  return response.data;
+}
+
+export const addChoice = async(newChoice: string, questionId: number) => {
+  const response = await apiClient.put(`/surveys/questions/addChoice`, {
+    questionId: questionId,
+    choice: newChoice
+  });
   return response.data;
 }
 

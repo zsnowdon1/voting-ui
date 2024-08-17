@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './SurveyView.css';
 import { useParams } from 'react-router-dom';
-import { fetchQuestionsBySurvey } from '../../services/ApiService'; // Assuming you have this service to fetch questions
+import { fetchSurveyDetails } from '../../services/ApiService'; // Assuming you have this service to fetch questions
 import { useNavigate } from 'react-router-dom';
-import { Question } from '../../constants/global.types';
+import { Question, Survey } from '../../constants/global.types';
 
 const SurveyView = () => {
     const { surveyId } = useParams<{ surveyId: string }>(); // Get the survey ID from the route parameters
-    const [questions, setQuestions] = useState([]);
+    const [survey, setSurvey] = useState<Survey>({title: '', questionList: [], surveyId: -1});
     const navigate = useNavigate();
 
     const handleAddQuestion = (questionId: number) => {
@@ -21,12 +21,12 @@ const SurveyView = () => {
     }
 
     const getQuestions = async () => {
-        const questionsList = await fetchQuestionsBySurvey(surveyId || ''); // Fetch questions based on survey ID
-        setQuestions(questionsList);
+        const survey = await fetchSurveyDetails(surveyId || ''); // Fetch questions based on survey ID
+        setSurvey(survey);
     };
 
     useEffect(() => {
-        if(questions.length === 0) {
+        if(survey.surveyId === -1) {
             getQuestions();
         }
     }, [surveyId]);
@@ -36,7 +36,7 @@ const SurveyView = () => {
             <div className="survey-view-card">
                 <button className="add-question-button" onClick={() => handleAddQuestion}>Add New Question</button>
                 <div className="question-list">
-                    {questions.map((question: Question, index: number) => (
+                    {survey.questionList.map((question: Question, index: number) => (
                         <button key={index} className="question-item-button" onClick={() => handleViewQuestion(question.questionId || -1)}>
                             <div className="question-info">
                                 <span className="question-id">Question {index + 1}</span>

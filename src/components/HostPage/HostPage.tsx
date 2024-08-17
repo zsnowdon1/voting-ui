@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './HostPage.css';
-import { fetchSurveys } from '../../services/ApiService';
+import { fetchSurveyList } from '../../services/ApiService';
 import { Survey } from '../../constants/global.types';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const HostPage = () => {
 
     const getSurveys = async () => {
         console.log("Getting surveys")
-        const surveyList = await fetchSurveys('zsnowdon');
+        const surveyList = await fetchSurveyList('zsnowdon');
         setSurveys(surveyList);
         console.log(JSON.stringify(surveyList));
     };
@@ -30,7 +30,7 @@ const HostPage = () => {
                 <button className='add-survey-button'>Add New Survey</button>
                 <div className='survey-list'>
                     {surveys.map((survey, index) => (
-                        <button key={index} className='survey-item-button' onClick={() => handleViewSurvey(survey.surveyId)}>
+                        <button key={index} className='survey-item-button' onClick={() => handleViewSurvey(survey.surveyId || -1)}>
                             <div className='survey-info'>
                                 <span className='survey-id'>ID: {survey.surveyId}</span>
                                 <span className='survey-title'>Title: {survey.title}</span>

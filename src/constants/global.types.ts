@@ -18,33 +18,10 @@ export interface Choice {
 }
 
 export interface Survey {
-    surveyId: number;
-    hostUsername: string;
+    surveyId?: number;
+    hostUsername?: string;
     title: string;
     questionList: Question[];
-}
-
-export interface SurveyTitleProps {
-    title: string,
-    updateTitle: (newTitle: string) => void;
-}
-
-export interface SurveyQuestionProps {
-    question?: Question,
-    questionNum: number,
-    addQuestionToSurvey: (newQuestion: Question) => void;
-}
-
-export interface UpdateQuestionProps {
-    question: Question,
-    questionNum: number,
-    updateQuestionText: (index: number, newText: string) => void;
-    updateChoices: (index: number, newChoices: Choice[]) => void;
-}
-
-export interface SurveyContainerProps {
-    surveyId: number,
-    hostUsername: string
 }
 
 export interface QuestionNavBarProps {
@@ -52,12 +29,8 @@ export interface QuestionNavBarProps {
     prevStep: () => void;
 }
 
-export interface SurveyNavBarProps {
-    onSave: () => void;
-    title: string,
-    saveToggle: boolean,
-    // onExit: () => void;
-    // onJumpToQuestion: () => void;
-    // currentStep: () => void;
-    // totalSteps: () => void;
+export interface ChoiceModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (newChoice: string) => void;
 }

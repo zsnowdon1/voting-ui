@@ -1,45 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import './QuestionView.css';
 import { useParams } from 'react-router-dom';
-import { fetchChoicesByQuestion } from '../../services/ApiService'; // Assuming you have this service to fetch questions
+import { fetchQuestionDetails, addChoice } from '../../services/ApiService'; // Assuming you have this service to fetch questions
 import { useNavigate } from 'react-router-dom';
-import { Choice } from '../../constants/global.types';
+import { Choice, Question } from '../../constants/global.types';
+import ChoiceModal from '../ChoiceModal/ChoiceModal';
 
 const QuestionView = () => {
     const { questionId } = useParams<{ questionId: string }>(); // Get the survey ID from the route parameters
-    const [choices, setChoices] = useState([]);
+    const [question, setQuestion] = useState<Question>({question: '', choices: []});
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const handleAddQuestion = (questionId: number) => {
-
+    const handleAddChoice = () => {
+        setIsModalOpen(true);
     };
 
-    const handleViewQuestion = (questionId: number) => {
+    const handleViewChoice = (questionId: number) => {
         if(questionId !== -1) {
             navigate(`/question/${questionId}`);
         }
     }
 
-    const getQuestions = async () => {
-        const questionsList = await fetchChoicesByQuestion(questionId || ''); // Fetch questions based on survey ID
-        if(questionsList !== '') {
-            setChoices(questionsList);
+    const handleSaveNewChoice = async (newChoice: string) => {
+        if(questionId !== undefined) {
+            const data = await addChoice(newChoice, question.questionId || -1);
+            const updatedChoices: Choice[] = [
+                ...question.choices,
+                { choice: newChoice, questionId: question.questionId || -1, choiceId: data }
+            ];
+            setQuestion({ ...question, choices: updatedChoices });
+        }
+    }
+
+    const getQuestion = async () => {
+        const question = await fetchQuestionDetails(questionId || ''); // Fetch questions based on survey ID
+        if(question !== '') {
+            setQuestion(question);
         }
     };
 
     useEffect(() => {
-        if(choices.length === 0) {
-            getQuestions();
+        if(question.surveyId === undefined) {
+            getQuestion();
         }
     }, [questionId]);
 
     return (
         <div className="question-view-container">
             <div className="question-view-card">
-                <button className="add-choice-button" onClick={() => handleAddQuestion}>Add New Choice</button>
+                <button className="add-choice-button" onClick={() => handleAddChoice()}>Add New Choice</button>
                 <div className="choice-list">
-                    {choices.map((choice: Choice, index: number) => (
-                        <button key={index} className="choice-item-button" onClick={() => handleViewQuestion(choice.choiceId || -1)}>
+                    {question.choices.map((choice: Choice, index: number) => (
+                        <button key={index} className="choice-item-button" onClick={() => handleViewChoice(choice.choiceId || -1)}>
                             <div className="choice-info">
                                 <span className="choice-id">Choice {index + 1}</span>
                                 <span className="choice-text">{choice.choice}</span>
@@ -47,6 +60,8 @@ const QuestionView = () => {
                         </button>
                     ))}
                 </div>
+
+                <ChoiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveNewChoice}/>
             </div>
         </div>
     );
