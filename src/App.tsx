@@ -1,14 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import SurveyContainer from './components/SurveyContainer/SurveyContainer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HostPage from './components/HostPage/HostPage';
+import SurveyView from './components/SurveyView/SurveyView';
+import QuestionView from './components/QuestionView/QuestionView';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <SurveyContainer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/survey/:surveyId" element={<SurveyView/>} />
+        <Route path="/host" element={<HostPage />} />
+        <Route path="/question/:questionId" element={<QuestionView/>} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
