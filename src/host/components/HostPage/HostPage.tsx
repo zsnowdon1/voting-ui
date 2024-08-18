@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './HostPage.css';
-import { createEmptySurvey, deleteSurvey, fetchSurveyList } from '../../services/ApiService';
-import { Survey } from '../../constants/global.types';
 import { useNavigate } from 'react-router-dom';
 import SurveyModal from '../SurveyModal/SurveyModal';
+import { Survey } from '../../../constants/global.types';
+import { createEmptySurvey, deleteSurvey, fetchSurveyList } from '../../services/hostApiService';
 
 const HostPage = () => {
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -39,7 +39,7 @@ const HostPage = () => {
     }
 
     const handleViewSurvey = (surveyId: number) => {
-        navigate(`/survey/${surveyId}`);
+        navigate(`/host/survey/${surveyId}`);
     }
 
     useEffect(() => {

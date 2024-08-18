@@ -1,6 +1,6 @@
 // apiService.ts
 import axios from 'axios';
-import { Question } from '../constants/global.types';
+import { Question } from '../../constants/global.types';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8081',

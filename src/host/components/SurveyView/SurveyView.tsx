@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './SurveyView.css';
 import { useParams } from 'react-router-dom';
-import { addQuestion, deleteQuestion, fetchSurveyDetails } from '../../services/ApiService';
+import { addQuestion, deleteQuestion, fetchSurveyDetails } from '../../services/hostApiService';
 import { useNavigate } from 'react-router-dom';
-import { Question, Survey } from '../../constants/global.types';
+import { Question, Survey } from '../../../constants/global.types';
 import QuestionModal from '../QuestionModal/QuestionModal';
 
 const SurveyView = () => {
@@ -43,7 +43,7 @@ const SurveyView = () => {
 
     const handleViewQuestion = (questionId: number) => {
         if(questionId !== -1) {
-            navigate(`/question/${questionId}`);
+            navigate(`/host/question/${questionId}`);
         }
     }
 

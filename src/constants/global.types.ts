@@ -1,9 +1,3 @@
-export interface CreateSurveyRequest {
-    username: string;
-    title: string;
-    questionList: Question[];
-  }
-  
 export interface Question {
     questionId?: number;
     surveyId?: number;
@@ -27,23 +21,4 @@ export interface Survey {
 export interface QuestionNavBarProps {
     nextStep: () => void;
     prevStep: () => void;
-}
-
-export interface ChoiceModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSave: (newChoice: string) => void;
-}
-
-export interface SurveyModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSave: (newTitle: string) => void;
-}
-
-export interface QuestionModalProps {
-    isOpen: boolean;
-    surveyId: number;
-    onClose: () => void;
-    onSave: (newQuestion: Question) => void;
 }
