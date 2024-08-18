@@ -3,19 +3,19 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { ChoiceModalProps } from '../../constants/global.types';
+import { SurveyModalProps } from '../../constants/global.types';
 
-const ChoiceModal = ({ isOpen, onClose, onSave }: ChoiceModalProps) => {
-    const [newChoiceText, setNewChoiceText] = useState('');
+const SurveyModal = ({ isOpen, onClose, onSave }: SurveyModalProps) => {
+    const [newSurveyTitle, setNewSurveyTitle] = useState('');
 
     const handleSave = () => {
-        onSave(newChoiceText);
-        setNewChoiceText('');
+        onSave(newSurveyTitle);
+        setNewSurveyTitle('');
         onClose();
     };
 
     return (
-        <Modal open={isOpen} onClose={onClose} aria-labelledby="add-choice-modal-title" aria-describedby="add-choice-modal-description">
+        <Modal open={isOpen} onClose={onClose} aria-labelledby="add-survey-modal-title" aria-describedby="add-survey-modal-description">
             <Box
             sx={{
                 position: 'absolute',
@@ -28,14 +28,14 @@ const ChoiceModal = ({ isOpen, onClose, onSave }: ChoiceModalProps) => {
                 boxShadow: 24,
                 p: 4,
             }}>
-                <h2 id="add-choice-modal-title">Add a Choice</h2>
-                <TextField label="Choice" fullWidth value={newChoiceText} onChange={(e) => setNewChoiceText(e.target.value)} />
+                <h2 id="add-choice-modal-title">Create new survey</h2>
+                <TextField label="Title" fullWidth value={newSurveyTitle} onChange={(e) => setNewSurveyTitle(e.target.value)} />
                 <Button variant="contained" color="primary" onClick={handleSave} sx={{ mt: 2 }} >
-                    Add Choice
+                    Create Survey
                 </Button>
             </Box>
       </Modal>
     );
 };
 
-export default ChoiceModal;
+export default SurveyModal;
