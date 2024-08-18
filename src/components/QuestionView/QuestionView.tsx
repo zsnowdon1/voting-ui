@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './QuestionView.css';
 import { useParams } from 'react-router-dom';
 import { fetchQuestionDetails, addChoice, deleteChoice } from '../../services/ApiService';
-import { useNavigate } from 'react-router-dom';
 import { Choice, Question } from '../../constants/global.types';
 import ChoiceModal from '../ChoiceModal/ChoiceModal';
 
@@ -36,6 +35,7 @@ const QuestionView = () => {
             ];
             setQuestion({ ...question, choices: updatedChoices });
         }
+        setIsModalOpen(false);
     }
 
     const getQuestion = async () => {

@@ -1,29 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import './SurveyView.css';
 import { useParams } from 'react-router-dom';
-import { addQuestion, fetchSurveyDetails } from '../../services/ApiService'; // Assuming you have this service to fetch questions
+import { addQuestion, deleteQuestion, fetchSurveyDetails } from '../../services/ApiService';
 import { useNavigate } from 'react-router-dom';
 import { Question, Survey } from '../../constants/global.types';
 import QuestionModal from '../QuestionModal/QuestionModal';
 
 const SurveyView = () => {
-    const { surveyId } = useParams<{ surveyId: string }>(); // Get the survey ID from the route parameters
+    const { surveyId } = useParams<{ surveyId: string }>();
     const [survey, setSurvey] = useState<Survey>({title: '', questionList: [], surveyId: -1});
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleAddQuestion = () => {
         setIsModalOpen(true);
-    };  
+    };
 
     const handleSaveNewQuestion = async (newQuestion: Question) => {
-        if(surveyId !== undefined) {
+        if(survey.surveyId !== undefined) {
+            newQuestion.surveyId = survey.surveyId;
             const data = await addQuestion(newQuestion);
             const updatedQuestions: Question[] = [
                 ...survey.questionList,
-                { surveyId: survey.surveyId || -1, question: newQuestion.question, choices: newQuestion.choices}
+                { questionId: data, surveyId: survey.surveyId || -1, question: newQuestion.question, choices: newQuestion.choices}
             ];
             setSurvey({ ...survey, questionList: updatedQuestions });
+        }
+        setIsModalOpen(false);
+    }
+
+    const handleDeleteQuestion = async (questionId: number) => {
+        if(questionId !== -1) {
+            const deletedChoice = await deleteQuestion(questionId);
+            if(deletedChoice === questionId) {
+                setSurvey(prevState => {
+                    const updatedQuestions = prevState.questionList.filter((question, _) => question.questionId !== questionId);
+                    return { ...prevState, questionList: updatedQuestions };
+                });
+            }
         }
     }
 
@@ -50,12 +64,13 @@ const SurveyView = () => {
                 <button className="add-question-button" onClick={handleAddQuestion}>Add New Question</button>
                 <div className="question-list">
                     {survey.questionList.map((question: Question, index: number) => (
-                        <button key={index} className="question-item-button" onClick={() => handleViewQuestion(question.questionId || -1)}>
-                            <div className="question-info">
-                                <span className="question-id">Question {index + 1}</span>
-                                <span className="question-text">{question.question}</span>
+                        <div key={index} className="question-item">
+                            <span className="question-text">{index + 1}. {question.question}</span>
+                            <div className="buttons">
+                                <button className="view-button" onClick={() => handleViewQuestion(question.questionId || -1)}>View</button>
+                                <button className="delete-button" onClick={() => handleDeleteQuestion(question.questionId || -1)}>Delete</button>
                             </div>
-                        </button>
+                        </div>
                     ))}
                 </div>
                 <QuestionModal isOpen={isModalOpen} surveyId={survey.surveyId || -1} onClose={() => setIsModalOpen(false)} onSave={handleSaveNewQuestion}/>

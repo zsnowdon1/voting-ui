@@ -27,8 +27,13 @@ export const fetchQuestionDetails = async (questionId: string) => {
   return response.data;
 }
 
+export const createEmptySurvey = async (title: string) => {
+  const response = await apiClient.post('/surveys/createSurvey', {username: 'zsnowdon', title: title});
+  return response.data
+}
+
 export const addChoice = async (newChoice: string, questionId: number) => {
-  const response = await apiClient.put(`/surveys/addChoice`, {
+  const response = await apiClient.put('/surveys/addChoice', {
     questionId: questionId,
     newChoice: newChoice
   });
@@ -36,9 +41,12 @@ export const addChoice = async (newChoice: string, questionId: number) => {
 }
 
 export const addQuestion = async (newQuestion: Question) => {
-  const response = await apiClient.put(`/surveys/addQuestion`, {
-    question: newQuestion
-  });
+  const response = await apiClient.put('/surveys/addQuestion', {title: newQuestion.question, surveyId: newQuestion.surveyId, choices: newQuestion.choices.map((choice) => choice.choice)});
+  return response.data;
+}
+
+export const deleteSurvey = async (surveyId: number) => {
+  const response = await apiClient.delete(`/surveys/survey/${surveyId}`);
   return response.data;
 }
 
@@ -47,6 +55,7 @@ export const deleteChoice = async (choiceId: number) => {
   return resposne.data;
 }
 
-// export const createSurvey = (data: SurveyData) => apiClient.post('/surveys', data);
-// export const updateSurvey = (surveyId: number, data: SurveyData) => apiClient.put(`/surveys/${surveyId}`, data);
-export const deleteSurvey = (surveyId: number) => apiClient.delete(`/surveys/${surveyId}`);
+export const deleteQuestion = async (questionId: number) => {
+  const response = await apiClient.delete(`/surveys/questions/${questionId}`);
+  return response.data;
+}
