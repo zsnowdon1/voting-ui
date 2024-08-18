@@ -47,14 +47,14 @@ const SurveyView = () => {
         }
     }
 
-    const getQuestions = async () => {
+    const getSurvey = async () => {
         const survey = await fetchSurveyDetails(surveyId || '');
         setSurvey(survey);
     };
 
     useEffect(() => {
         if(survey.surveyId === -1) {
-            getQuestions();
+            getSurvey();
         }
     }, [surveyId]);
 
