@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './QuestionView.css';
 import { useParams } from 'react-router-dom';
-import { fetchQuestionDetails, addChoice, deleteChoice } from '../../services/ApiService';
-import { Choice, Question } from '../../constants/global.types';
+import { fetchQuestionDetails, addChoice, deleteChoice } from '../../services/hostApiService';
+import { Choice, Question } from '../../../constants/global.types';
 import ChoiceModal from '../ChoiceModal/ChoiceModal';
 
 const QuestionView = () => {

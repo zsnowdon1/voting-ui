@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
-import { Question, QuestionModalProps } from '../../constants/global.types';
+import { Question } from '../../../constants/global.types';
+import { QuestionModalProps } from '../../constants/host.types';
 
 const QuestionModal = ({ isOpen, surveyId, onClose, onSave }: QuestionModalProps) => {
     const [question, setQuestion] = useState<Question>({question: '', choices: [], surveyId: surveyId});

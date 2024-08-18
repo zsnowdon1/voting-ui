@@ -1,5 +1,5 @@
 import React from 'react';
-import { QuestionNavBarProps } from '../../constants/global.types';
+import { QuestionNavBarProps } from '../../../constants/global.types';
 import './QuestionNavBar.css';
 
 const QuestionNavBar = ({ nextStep, prevStep }: QuestionNavBarProps) => {
