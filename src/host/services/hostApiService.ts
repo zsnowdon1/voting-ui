@@ -12,11 +12,6 @@ export const fetchSurveyList = async (hostname: string) => {
   return response.data;
 }
 
-export const fetchSurveyById = async (surveyId: number) => {
-  const response = await apiClient.get(`/surveys/${surveyId}`);
-  return response.data;
-}
-
 export const fetchSurveyDetails = async (surveyId: string) => {
   const response = await apiClient.get(`/surveys/${surveyId}`);
   return response.data;
