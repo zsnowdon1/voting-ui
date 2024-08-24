@@ -25,7 +25,7 @@ export interface QuestionNavBarProps {
 export interface SurveyResponse {
     username: string,
     surveyId: number,
-    responses: QuestionResponse[]
+    responses: number[]
 }
 
 export interface QuestionResponse {

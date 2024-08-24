@@ -10,18 +10,45 @@ const SurveyClientView = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
     const [questionIndex, setQuestionIndex] = useState(0);
     const [response, setResponse] = useState<SurveyResponse>({surveyId: -1, username: '', responses:[]});
+    const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
     const navigate = useNavigate();
 
-    const handleResponseChange = (questionId: number, chiceId: number) => {
-
+    const handleResponseChange = (newChoiceId: number) => {
+        if(selectedChoice === newChoiceId) {
+            setSelectedChoice(null);
+        } else {
+            setSelectedChoice(newChoiceId);
+        }
     }
 
     const handleNextStep = () => {
-
+        saveChoice();
+        setQuestionIndex((prevIndex) => {
+            const newIndex = prevIndex + 1;
+            const existingChoice = response.responses[newIndex] || null;
+            setSelectedChoice(existingChoice);
+            return newIndex;
+        });
     }
 
     const handlePrevStep = () => {
+        saveChoice();
+        setQuestionIndex((prevIndex) => {
+            const newIndex = prevIndex - 1;
+            const existingChoice = response.responses[newIndex] || null;
+            setSelectedChoice(existingChoice);
+            return newIndex;
+        });
+    }
 
+    const saveChoice = () => {
+        if (selectedChoice !== null) {
+            setResponse((prevResponse) => {
+                const updatedResponses = [...prevResponse.responses];
+                updatedResponses[questionIndex] = selectedChoice;
+                return { ...prevResponse, responses: updatedResponses };
+            });
+        }
     }
 
     const getSurvey = async () => {
@@ -51,7 +78,7 @@ const SurveyClientView = () => {
                     <div className="options-container">
                         {currentQuestion.choices.map((choice, index) => (
                             <label className="option-label" key={index + 1}>
-                                <input type="radio" name="response" value={choice.choiceId} onChange={() => handleResponseChange(currentQuestion.questionId, choice.choiceId)} />
+                                <input type="radio" checked={selectedChoice === choice.choiceId} value={choice.choiceId} onClick={() => handleResponseChange(choice.choiceId)} onChange={() => {}} />
                                 {choice.choice}
                             </label>
                         ))}
@@ -60,7 +87,7 @@ const SurveyClientView = () => {
 
                 <div className="navbar">
                     <button onClick={handlePrevStep} disabled={questionIndex === 0}>Previous</button>
-                    <button onClick={handleNextStep} disabled={questionIndex >= (survey.questionList.length - 1)}>Next</button>
+                    <button onClick={handleNextStep}>{questionIndex === survey.questionList.length - 1 ? "Submit" : "Next"}</button>
                 </div>
             </div>
         </div>
