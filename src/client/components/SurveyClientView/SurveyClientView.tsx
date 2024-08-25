@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchSurvey } from "../../services/clientApiService";
+import { fetchSurvey, submitResponse } from "../../services/clientApiService";
 import { Survey, SurveyResponse } from "../../constants/client.types";
 import './SurveyClientView.css';
+import QuestionClientView from "../QuestionClientView/QuestionClientView";
 
 
 const SurveyClientView = () => {
@@ -23,12 +24,24 @@ const SurveyClientView = () => {
 
     const handleNextStep = () => {
         saveChoice();
-        setQuestionIndex((prevIndex) => {
-            const newIndex = prevIndex + 1;
-            const existingChoice = response.responses[newIndex] || null;
-            setSelectedChoice(existingChoice);
-            return newIndex;
-        });
+        if(questionIndex + 1 === survey?.questionList.length) {
+            handleSubmitSurvey();
+        } else {
+            setQuestionIndex((prevIndex) => {
+                const newIndex = prevIndex + 1;
+                const existingChoice = response.responses[newIndex] || null;
+                if(existingChoice !== null) {
+                    setSelectedChoice(existingChoice.choiceId);
+                } else {
+                    setSelectedChoice(null);
+                }
+                return newIndex;
+            });
+        }
+    }
+
+    const handleSubmitSurvey = async () => {
+        await submitResponse(response);
     }
 
     const handlePrevStep = () => {
@@ -36,7 +49,7 @@ const SurveyClientView = () => {
         setQuestionIndex((prevIndex) => {
             const newIndex = prevIndex - 1;
             const existingChoice = response.responses[newIndex] || null;
-            setSelectedChoice(existingChoice);
+            setSelectedChoice(existingChoice.choiceId);
             return newIndex;
         });
     }
@@ -45,8 +58,8 @@ const SurveyClientView = () => {
         if (selectedChoice !== null) {
             setResponse((prevResponse) => {
                 const updatedResponses = [...prevResponse.responses];
-                updatedResponses[questionIndex] = selectedChoice;
-                return { ...prevResponse, responses: updatedResponses };
+                updatedResponses[questionIndex] = {questionId: survey?.questionList[questionIndex].questionId || -1, choiceId: selectedChoice};
+                return { ...prevResponse, surveyId: survey?.surveyId || -1, responses: updatedResponses };
             });
         }
     }
@@ -73,17 +86,7 @@ const SurveyClientView = () => {
             <div className="survey-card">
                 <h1 className="survey-title">{survey.title}</h1>
                 
-                <div className="question-container">
-                    <h2 className="question-text">{currentQuestion.question}</h2>
-                    <div className="options-container">
-                        {currentQuestion.choices.map((choice, index) => (
-                            <label className="option-label" key={index + 1}>
-                                <input type="radio" checked={selectedChoice === choice.choiceId} value={choice.choiceId} onClick={() => handleResponseChange(choice.choiceId)} onChange={() => {}} />
-                                {choice.choice}
-                            </label>
-                        ))}
-                    </div>
-                </div>
+                <QuestionClientView question={survey.questionList[questionIndex]} selectedChoice={selectedChoice} onChoiceChange={handleResponseChange}/>
 
                 <div className="navbar">
                     <button onClick={handlePrevStep} disabled={questionIndex === 0}>Previous</button>
