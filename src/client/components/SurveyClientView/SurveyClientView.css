@@ -3,76 +3,45 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    min-height: 100vh;
+    background-color: #f1f1f1;
+    padding: 30px 0;
 }
 
 .survey-card {
-    width: 400px;
+    width: 100%; /* Ensure the card takes the full width */
+    max-width: 500px; /* Limit the maximum width */
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    padding: 35px;
     text-align: center;
+    box-sizing: border-box; /* Include padding in the width/height */
 }
 
 .survey-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.question-container {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.question-text {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #444;
-}
-
-.options-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.option-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.option-label:hover {
-    background-color: #f0f0f0;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 35px;
+    color: #222;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 35px;
 }
 
 .navbar button {
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1rem;
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .navbar button:disabled {
@@ -82,4 +51,5 @@
 
 .navbar button:hover:not(:disabled) {
     background-color: #0056b3;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
