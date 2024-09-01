@@ -54,3 +54,10 @@ export const deleteQuestion = async (questionId: number) => {
   const response = await apiClient.delete(`/surveys/questions/${questionId}`);
   return response.data;
 }
+
+
+// RESULTS
+export const fetchResults = async(surveyId: number) => {
+  const response = await apiClient.get(`/surveys/${surveyId}/results`);
+  return response.data;
+}
