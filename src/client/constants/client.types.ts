@@ -37,3 +37,9 @@ export interface QuestionResponse {
     questionId: number,
     choiceId: number
 }
+
+export interface QuestionContainerProps {
+    question: Question;
+    selectedChoice: number | null;
+    onChoiceChange: (choiceId: number) => void;
+}
