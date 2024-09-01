@@ -18,8 +18,8 @@ const QuestionClientView = ({
             <h2 className="question-text">{question.question}</h2>
             <ul className="choices-list">
                 {question.choices.map((choice, index) => (
-                    <li key={index} className="choice-item" onClick={() => onChoiceChange(index)}>
-                        <input type="radio" checked={selectedChoice === index} onClick={() => onChoiceChange(index)}/>
+                    <li key={index} className="choice-item" onClick={() => onChoiceChange(choice.choiceId)}>
+                        <input type="radio" checked={selectedChoice === choice.choiceId} onClick={() => onChoiceChange(choice.choiceId)}/>
                         <span>{choice.choice}</span>
                     </li>
                 ))}
