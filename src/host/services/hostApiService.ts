@@ -1,6 +1,7 @@
 // apiService.ts
 import axios from 'axios';
 import { Question } from '../../constants/global.types';
+import { ChoiceMapping } from '../constants/host.types';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8081',
@@ -15,6 +16,18 @@ export const fetchSurveyList = async (hostname: string) => {
 export const fetchSurveyDetails = async (surveyId: string) => {
   const response = await apiClient.get(`/surveys/${surveyId}`);
   return response.data;
+}
+
+export const fetchChoiceMappings = async (surveyId: string): Promise<Map<number, string>> => {
+  const response = await apiClient.get(`/surveys/${surveyId}/choices`);
+  const choiceMappings: ChoiceMapping[] = response.data;
+
+  const choiceMap: Map<number, string> = choiceMappings.reduce((map, choice) => {
+    map.set(choice.choiceId, choice.choiceName);
+    return map;
+  }, new Map<number, string>());
+
+  return choiceMap;
 }
 
 export const fetchQuestionDetails = async (questionId: string) => {
@@ -52,12 +65,5 @@ export const deleteChoice = async (choiceId: number) => {
 
 export const deleteQuestion = async (questionId: number) => {
   const response = await apiClient.delete(`/surveys/questions/${questionId}`);
-  return response.data;
-}
-
-
-// RESULTS
-export const fetchResults = async(surveyId: number) => {
-  const response = await apiClient.get(`/surveys/${surveyId}/results`);
   return response.data;
 }
