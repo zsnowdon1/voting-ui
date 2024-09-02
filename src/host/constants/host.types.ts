@@ -19,6 +19,16 @@ export interface QuestionModalProps {
     onSave: (newQuestion: Question) => void;
 }
 
+export interface VoteChartProps {
+    questionTitle: string,
+    voteChoices: VoteChoice[]
+}
+
+export interface SseHookProps {
+    surveyId: number,
+    onVoteUpdate: (voteUpdate: VoteUpdate) => void;
+}
+
 export interface ChoiceMapping {
     choiceId: number;
     choiceName: string;
@@ -33,4 +43,10 @@ export interface VoteChoice {
 export interface Vote {
     questionId: number,
     votes: VoteChoice[]
+}
+
+export interface VoteUpdate {
+    choiceId: number,
+    questionId: number,
+    votes: number
 }

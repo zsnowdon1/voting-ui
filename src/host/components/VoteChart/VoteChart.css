@@ -1,0 +1,18 @@
+.chart-container {
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height of the container to prevent cutoff */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center chart horizontally */
+    align-items: center; /* Center chart vertically */
+    padding: 0 10px; /* Padding for spacing */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.chart-content {
+    width: 100%; /* Ensure the chart takes the full width */
+    padding-bottom: 10px; /* Add padding at the bottom to prevent cutoff */
+    display: flex;
+    justify-content: left; /* Center the chart content */
+    align-items: flex-start; /* Align the chart to the start */
+}

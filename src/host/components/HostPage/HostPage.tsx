@@ -38,6 +38,10 @@ const HostPage = () => {
         }
     }
 
+    const handleViewResults = (surveyId: number) => {
+        navigate(`/host/survey/${surveyId}/results`)
+    }
+
     const handleViewSurvey = (surveyId: number) => {
         navigate(`/host/survey/${surveyId}`);
     }
@@ -57,6 +61,7 @@ const HostPage = () => {
                             <span className='survey-title'>{index + 1}. {survey.title}</span>
                             <div className='buttons'>
                                 <button className='view-button' onClick={() => handleViewSurvey(survey.surveyId || -1)}>View</button>
+                                <button className='results-button' onClick={() => handleViewResults(survey.surveyId || -1)}>Results</button>
                                 <button className='delete-button' onClick={() => handleDeleteSurvey(survey.surveyId || -1)}>Delete</button>
                             </div>
                         </div>
