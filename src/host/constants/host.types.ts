@@ -18,3 +18,19 @@ export interface QuestionModalProps {
     onClose: () => void;
     onSave: (newQuestion: Question) => void;
 }
+
+export interface ChoiceMapping {
+    choiceId: number;
+    choiceName: string;
+}
+
+export interface VoteChoice {
+    choiceId: number,
+    name?: string,
+    votes: number
+}
+
+export interface Vote {
+    questionId: number,
+    votes: VoteChoice[]
+}

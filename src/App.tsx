@@ -15,7 +15,7 @@ const App = () => {
         <Route path="/host/survey/:surveyId" element={<SurveyView/>} />
         <Route path="/host" element={<HostPage />} />
         <Route path="/host/question/:questionId" element={<QuestionView/>} />
-        <Route path="/host/survey/results" element={<ResultsView/>}/>
+        <Route path="/host/survey/:surveyId/results" element={<ResultsView/>}/>
         {/* Client Routing */}
         <Route path="/client/survey/:surveyId" element={<SurveyClientView/>}/>
       </Routes>
